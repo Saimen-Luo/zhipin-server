@@ -51,9 +51,9 @@ function testSave() {
     })
 
     // 调用save()保存
-    user_model.save(function (error,user) {
+    user_model.save(function (error, user) {
         console.log('save()', error, user);
-        
+
     })
 }
 
@@ -62,14 +62,22 @@ function testSave() {
 function testFind() {
     // find和findOne都是构造函数UserModel对象的方法
     // 查询多个,使用find,返回的是所有匹配文档对象的数组,没有匹配的是空数组[]
-    UserModel.find(function (error,users) {
-        console.log('find()',error,users)
+    UserModel.find(function (error, users) {
+        console.log('find()', error, users)
     })
     // 查询一个,使用findOne,返回的是匹配的对象,没有匹配的是null
-    UserModel.findOne({_id:'5ccbfb520137f6355c387773'},function (error,user) {
-        console.log('findOne()',error,user)
+    UserModel.findOne({ _id: '5ccbfb520137f6355c387773' }, function (error, user) {
+        console.log('findOne()', error, user)
     })
 }
-testFind()
+// testFind()
 // 3.3. 通过 Model 的 findByIdAndUpdate() 更新某个数据
+function testUpdate() {
+    // findByIdAndUpdate(id对象,更新数据对象,回调函数)
+    UserModel.findByIdAndUpdate({ _id: '5ccbfb520137f6355c387773' }, { username: 'jack' }, function (error, oldUser) {
+        console.log('findByIdAndUpdate()', error, oldUser);
+    })
+}
+
+testUpdate()
 // 3.4. 通过 Model 的 remove() 删除匹配的数据
