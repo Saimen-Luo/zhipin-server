@@ -57,7 +57,19 @@ function testSave() {
     })
 }
 
-testSave()
+// testSave()
 // 3.2. 通过 Model 的 find()/findOne() 查询多个或一个数据
+function testFind() {
+    // find和findOne都是构造函数UserModel对象的方法
+    // 查询多个,使用find,返回的是所有匹配文档对象的数组,没有匹配的是空数组[]
+    UserModel.find(function (error,users) {
+        console.log('find()',error,users)
+    })
+    // 查询一个,使用findOne,返回的是匹配的对象,没有匹配的是null
+    UserModel.findOne({_id:'5ccbfb520137f6355c387773'},function (error,user) {
+        console.log('findOne()',error,user)
+    })
+}
+testFind()
 // 3.3. 通过 Model 的 findByIdAndUpdate() 更新某个数据
 // 3.4. 通过 Model 的 remove() 删除匹配的数据
