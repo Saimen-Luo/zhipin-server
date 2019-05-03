@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 const { UserModel } = require('../db/models')
 const md5 = require('blueimp-md5')
-
+// 设置过滤的属性
+const filter = { password: 0, __v: 0 }
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
@@ -50,6 +51,22 @@ router.post('/register', function (req, res) {
     }
   })
 
+
+})
+
+// 用户登录路由
+router.post('/login', function (req, res) {
+  // 从请求体获取请求参数
+  const { username, password } = req.body
+  // 查询数据库,如果有user,登录成功,返回成功信息;如果没有;登录失败,返回错误信息
+  // 过滤用户密码等不必要信息
+  UserModel.findOne({ username, password: md5(password) }, filter, function (err, user) {
+    if (user) { // 登录成功
+      res.send({ code: 0, data: user })
+    } else { // 登录失败
+      res.send({ code: 1, msg: '用户名或密码错误' })
+    }
+  })
 
 })
 
