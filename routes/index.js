@@ -70,4 +70,31 @@ router.post('/login', function (req, res) {
 
 })
 
+// 用户更新 完善信息路由
+router.post('/update', function (req, res) {
+  // 从cookies中获取用户id 如果用户登录成功，请求会携带cookies
+  const userId = req.cookies.userId
+  // 如果没有对应的cookie说明用户没有登录
+  if (!userId) {
+    return res.send({ code: 1, msg: '请先登录' })
+  }
+  const user = req.body // user里面没有保存_id
+  UserModel.findByIdAndUpdate({ _id: userId }, user, function (err, oldUser) {
+    if (!oldUser) {
+      // 如果没有oldUser，说明cookie信息异常，通知浏览器删除
+      res.clearCookie('userId')
+      // 返回错误信息
+      res.send({ code: 1, msg: '请先登录' })
+    } else {
+      // 更新成功，返回更新后的用户信息
+      // user里面没有_id, type, username ，从oldUser取
+      const { _id, type, username } = oldUser
+      // 用asign方法组合user和{ _id, type, username }两个对象成为新的对象，补足缺少的属性
+      // asign方法注意对象参数的顺序，如果对象的属性重复，后面的会把前面的覆盖，这里没有重复
+      const data = Object.assign(user, { _id, type, username })
+      res.send({ code: 0, data })
+    }
+  })
+})
+
 module.exports = router;
