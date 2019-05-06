@@ -97,4 +97,27 @@ router.post('/update', function (req, res) {
   })
 })
 
+// 根据cookie中的useId获取用户信息
+router.get('/user', function (req, res) {
+  // 从cookies中获取用户id 如果用户登录成功，请求会携带cookies
+  const userId = req.cookies.userId
+  // 如果没有对应的cookie说明用户没有登录
+  if (!userId) {
+    return res.send({ code: 1, msg: '请先登录' })
+  }
+  UserModel.findOne({ _id: userId }, filter, function (err, user) {
+    if (!user) {
+      // 如果没有user，说明cookie信息异常，通知浏览器删除
+      res.clearCookie('userId')
+      // 返回错误信息
+      res.send({ code: 1, msg: '请先登录' })
+    } else {
+      // 如果有，返回user
+      res.send({ code: 0, data: user })
+
+    }
+  })
+
+})
+
 module.exports = router;
