@@ -62,6 +62,8 @@ router.post('/login', function (req, res) {
   // 过滤用户密码等不必要信息
   UserModel.findOne({ username, password: md5(password) }, filter, function (err, user) {
     if (user) { // 登录成功
+      // 生成一个 cookie(userid: user._id), 并交给浏览器保存
+      res.cookie('userId', user._id, { maxAge: 1000 * 60 * 60 * 24 }) // 持久化 cookie, 浏览器会保存在本地文件
       res.send({ code: 0, data: user })
     } else { // 登录失败
       res.send({ code: 1, msg: '用户名或密码错误' })
