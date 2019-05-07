@@ -122,4 +122,21 @@ router.get('/user', function (req, res) {
 
 })
 
+// 获取用户列表
+router.get('/userlist', function (req, res) {
+  // 从cookies中获取用户id 如果用户登录成功，请求会携带cookies
+  // 如果没有对应的cookie说明用户没有登录
+  const userId = req.cookies.userId
+  const { type } = req.query
+
+  if (!userId) {
+    return res.send({ code: 1, msg: '请先登录' })
+  }
+
+  UserModel.find({ type }, filter, function (err, users) {
+    res.send({ code: 0, data: users })
+  })
+
+})
+
 module.exports = router;
