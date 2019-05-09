@@ -11,8 +11,8 @@ module.exports = function (server) {
             // 处理数据(保存)
             // 准备chagnMsg的相关数据
             const chat_id = [from, to].sort().join('_') // from_to 或 to_from ，视排序结果而定
-            const creat_time = Date.now()
-            new ChatModel({ from, to, content, chat_id, creat_time }).save(function (err, chatMsg) {
+            const create_time = Date.now()
+            new ChatModel({ from, to, content, chat_id, create_time }).save(function (err, chatMsg) {
                 // 向客户端发送消息
                 io.emit('receiveMsg', chatMsg)
             })
