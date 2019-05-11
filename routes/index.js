@@ -5,7 +5,7 @@ const md5 = require('blueimp-md5')
 // 设置过滤的属性
 const filter = { password: 0, __v: 0 }
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/zhipin/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
 // d) admin 是已注册用户
 // e) 注册成功返回: {code: 0, data: {_id: 'abc', username: ‘xxx’, password:’123’}
 // f) 注册失败返回: {code: 1, msg: '此用户已存在'}
-// router.post('/register', function (req, res) {
+// router.post('/zhipin/register', function (req, res) {
 //   // 1. 获取请求参数
 //   const { username, password } = req.body
 //   // 2. 处理
@@ -31,7 +31,7 @@ router.get('/', function (req, res, next) {
 // })
 
 // 用户注册路由
-router.post('/register', function (req, res) {
+router.post('/zhipin/register', function (req, res) {
   // 从请求体获取请求参数
   const { username, password, type } = req.body
   // 读取已有数据库,判断用户是否已注册;如果已经注册,返回错误信息;如果不存在,保存
@@ -55,7 +55,7 @@ router.post('/register', function (req, res) {
 })
 
 // 用户登录路由
-router.post('/login', function (req, res) {
+router.post('/zhipin/login', function (req, res) {
   // 从请求体获取请求参数
   const { username, password } = req.body
   // 查询数据库,如果有user,登录成功,返回成功信息;如果没有;登录失败,返回错误信息
@@ -73,7 +73,7 @@ router.post('/login', function (req, res) {
 })
 
 // 用户更新 完善信息路由
-router.post('/update', function (req, res) {
+router.post('/zhipin/update', function (req, res) {
   // 从cookies中获取用户id 如果用户登录成功，请求会携带cookies
   const userId = req.cookies.userId
   // 如果没有对应的cookie说明用户没有登录
@@ -100,7 +100,7 @@ router.post('/update', function (req, res) {
 })
 
 // 根据cookie中的useId获取用户信息
-router.get('/user', function (req, res) {
+router.get('/zhipin/user', function (req, res) {
   // 从cookies中获取用户id 如果用户登录成功，请求会携带cookies
   const userId = req.cookies.userId
   // 如果没有对应的cookie说明用户没有登录
@@ -123,7 +123,7 @@ router.get('/user', function (req, res) {
 })
 
 // 获取用户列表
-router.get('/userlist', function (req, res) {
+router.get('/zhipin/userlist', function (req, res) {
   // 从cookies中获取用户id 如果用户登录成功，请求会携带cookies
   // 如果没有对应的cookie说明用户没有登录
   const userId = req.cookies.userId
@@ -142,7 +142,7 @@ router.get('/userlist', function (req, res) {
 /*
 获取当前用户所有相关聊天信息列表
 */
-router.get('/msglist', function (req, res) {
+router.get('/zhipin/msglist', function (req, res) {
   // 获取 cookie 中的 userId
   const userId = req.cookies.userId
   // 查询得到所有 user 文档数组
@@ -167,7 +167,7 @@ router.get('/msglist', function (req, res) {
 /*
 修改指定消息为已读
 */
-router.post('/readmsg', function (req, res) {
+router.post('/zhipin/readmsg', function (req, res) {
   // 得到请求中的 from 和 to
   const from = req.body.from
   const to = req.cookies.userId
@@ -181,7 +181,7 @@ router.post('/readmsg', function (req, res) {
   */
   ChatModel.update({ from, to, read: false }, { read: true }, { multi: true }, function (err,
     doc) {
-    console.log('/readmsg', doc)
+    console.log('/zhipin/readmsg', doc)
     res.send({ code: 0, data: doc.nModified }) // 更新的数量
   })
 })
